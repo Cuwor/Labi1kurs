@@ -1,0 +1,7 @@
+C:\Users\Cuwor\Desktop\Labi1kurs\Labi1kurs\Laba3_4\Laba3_4\bin\Debug\Laba3_4.exe.config
+C:\Users\Cuwor\Desktop\Labi1kurs\Labi1kurs\Laba3_4\Laba3_4\bin\Debug\Laba3_4.exe
+C:\Users\Cuwor\Desktop\Labi1kurs\Labi1kurs\Laba3_4\Laba3_4\bin\Debug\Laba3_4.pdb
+C:\Users\Cuwor\Desktop\Labi1kurs\Labi1kurs\Laba3_4\Laba3_4\obj\Debug\Laba3_4.csprojResolveAssemblyReference.cache
+C:\Users\Cuwor\Desktop\Labi1kurs\Labi1kurs\Laba3_4\Laba3_4\obj\Debug\Laba3_4.csproj.CoreCompileInputs.cache
+C:\Users\Cuwor\Desktop\Labi1kurs\Labi1kurs\Laba3_4\Laba3_4\obj\Debug\Laba3_4.exe
+C:\Users\Cuwor\Desktop\Labi1kurs\Labi1kurs\Laba3_4\Laba3_4\obj\Debug\Laba3_4.pdb
