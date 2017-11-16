@@ -23,7 +23,8 @@ namespace Laba3_4
                     }
                 }
                 Show(array,n);
-                Uporyadochivanie(array, n);
+                //Uporyadochivanie(array, n);
+                OtricStolb(array, n);
             }
         }
 
@@ -39,26 +40,35 @@ namespace Laba3_4
             //                a[j, g + 1] = temp;
 
             //            }
+            //for (int i = 0; i < n; i++)
+            //    for (int j = 0; j < n - 1; j++)
+            //        for (int g = 0; g < n; g++)
+            //            if (a[j, g] < a[j + 1, g])
+            //            {
+            //                int temp = a[j, g];
+            //                a[j, g] = a[j + 1, g];
+            //                a[j + 1, g] = temp;
+            //            }
+            
+            Show(a, n);
+        }
+        static void OtricStolb(int[,] a, int n)
+        {
+            int stolb = 0;
             for (int i = 0; i < n; i++)
                 for (int j = 0; j < n - 1; j++)
                     for (int g = 0; g < n; g++)
-                        if (a[j, g] < a[j + 1, g])
+                        if (a[j, g] < 0 || stolb == 0)
                         {
-                            int temp = a[j, g];
-                            a[j, g] = a[j + 1, g];
-                            a[j + 1, g] = temp;
+                            stolb = g+1;
+                            break;
                         }
-
-
-            Show(a, n);
+            Console.WriteLine("Номер столбца с отрицательным числом " + stolb);
         }
-        void ZamenaNaGlavnoy()
-            {
-
-            }
 
         static void Show(int[,] a, int n)
         {
+            Console.WriteLine("Массив:");
             for (int i = 0; i < n; i++)
             {
                 for (int j = 0; j < n; j++)
