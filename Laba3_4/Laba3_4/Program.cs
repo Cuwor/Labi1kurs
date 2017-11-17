@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Console;
 
 namespace Laba3_4
 {
@@ -12,71 +14,100 @@ namespace Laba3_4
         {
             while (true)
             {
-                int n = Convert.ToInt32(Console.ReadLine());
-                int[,] array = new int[n, n];
-                for (int i = 0; i < n; i++)
+                Clear();
+                Random ran = new Random();
+                int width = ran.Next(1,20);
+                var a = new IEnumerable[width];
+                int length = ran.Next(1,20);
+
+                for (int i = 0; i < width; i++)
                 {
-                    for (int j = 0; j < n; j++)
+                    var b = new int[length];
+                    for (int j = 0; j < length; j++)
                     {
-                        Console.WriteLine("Введи a[{0},{1}]", i, j);
-                        array[i, j] = Convert.ToInt32(Console.ReadLine());
+                        b[j] = ran.Next(-2, 20);
+                    }
+                    a[i] = b;
+                }
+                
+            
+                Show(a);
+                Uporyadochivanie(a);
+                OtricStolb(a);
+                ReadKey();
+            }
+        }
+
+        static void Uporyadochivanie(IEnumerable[] a)
+        {
+            
+            while (true)
+            {
+                bool flag = false;
+                for (int i = 0; i < a.Length - 1; i++)
+                {
+                    int first = 0;
+                    int second = 0;
+                    foreach (var current in a[i])
+                    {
+                        first += Math.Abs((int)current);
+                    }
+                    foreach (var current in a[i + 1])
+                    {
+                        second += Math.Abs((int)current);
+                    }
+                    if (first < second)
+                    {
+                        var buf = a[i];
+                        a[i] = a[i + 1];
+                        a[i + 1] = buf;
+                        flag = true;
                     }
                 }
-                Show(array,n);
-                //Uporyadochivanie(array, n);
-                OtricStolb(array, n);
+                if (!flag) break;
             }
+            Show(a);
         }
-
-        static void Uporyadochivanie(int[,] a, int n)
+        static void OtricStolb(IEnumerable[] a)
         {
-            //for (int i = 0; i < n; i++)
-            //    for (int j = 0; j < n; j++)
-            //        for (int g = 0; g < n - 1; g++)
-            //            if (a[j, g] < a[j, g + 1])
-            //            {
-            //                int temp = a[j, g];
-            //                a[j, g] = a[j, g + 1];
-            //                a[j, g + 1] = temp;
+            int maxlength = 0;
+            foreach (var current in a)
+            {
+                if (maxlength < ((int[])current).Length) maxlength = ((int[])current).Length;
+            }
 
-            //            }
-            //for (int i = 0; i < n; i++)
-            //    for (int j = 0; j < n - 1; j++)
-            //        for (int g = 0; g < n; g++)
-            //            if (a[j, g] < a[j + 1, g])
-            //            {
-            //                int temp = a[j, g];
-            //                a[j, g] = a[j + 1, g];
-            //                a[j + 1, g] = temp;
-            //            }
-            
-            Show(a, n);
-        }
-        static void OtricStolb(int[,] a, int n)
-        {
-            int stolb = 0;
-            for (int i = 0; i < n; i++)
-                for (int j = 0; j < n - 1; j++)
-                    for (int g = 0; g < n; g++)
-                        if (a[j, g] < 0 || stolb == 0)
+            int number = -1;
+
+            for (int i = 0; i < maxlength; i++)
+            {
+                for (int j = 0; j < a.Length; j++)
+                {
+                    if (((int[])a[j]).Length > i)
+                    {
+                        if (((int[])a[j])[i] < 0)
                         {
-                            stolb = g+1;
+                            number = i;
                             break;
                         }
-            Console.WriteLine("Номер столбца с отрицательным числом " + stolb);
+                    }
+                }
+                if (number >= 0) break;
+            }
+            if (number >= 0) Console.WriteLine("Номер отрицательного столбца: " + (number + 1));
         }
 
-        static void Show(int[,] a, int n)
+        static void Show(IEnumerable[] a)
         {
-            Console.WriteLine("Массив:");
-            for (int i = 0; i < n; i++)
+            WriteLine("Массив:\n");
+            foreach (var current in a)
             {
-                for (int j = 0; j < n; j++)
+                foreach (var inserted in current)
                 {
-                    Console.Write(a[i,j] + " ");
+                    Write("{0,4}",inserted);
                 }
-                Console.WriteLine();
+                WriteLine();
             }
+            WriteLine("\n==================================================\n");
         }
     }
 }
