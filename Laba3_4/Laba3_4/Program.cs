@@ -1,113 +1,168 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
 using static System.Console;
 
 namespace Laba3_4
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            while (true)
+            var exit = false;
+            while (!exit)
             {
                 Clear();
-                Random ran = new Random();
-                int width = ran.Next(1,20);
-                var a = new IEnumerable[width];
-                int length = ran.Next(1,20);
-
-                for (int i = 0; i < width; i++)
-                {
-                    var b = new int[length];
-                    for (int j = 0; j < length; j++)
-                    {
-                        b[j] = ran.Next(-2, 20);
-                    }
-                    a[i] = b;
-                }
                 
-            
-                Show(a);
-                Uporyadochivanie(a);
-                OtricStolb(a);
-                ReadKey();
+                WriteLine("1. Автозаполнение");
+                WriteLine("2. Заполнить вручную");
+                WriteLine("3. Выход");
+
+                var menu1 = Convert.ToInt32(ReadLine());
+                var Width = 0;
+                var Heigth = 0;
+                switch (menu1)
+                {
+                    case 1:
+                        var arrayAuto = AutoZapolnenie(out Heigth, out Width);
+                        menu2(arrayAuto, Width, Heigth);
+                        break;
+                    case 2:
+                        WriteLine("Введите ширину");
+                        Width = Convert.ToInt32(ReadLine());
+                        WriteLine("Введите высоту");
+                        Heigth = Convert.ToInt32(ReadLine());
+
+                        var array = new int[Width, Heigth];
+                        for (int i = 0; i < Width; i++)
+                        {
+                            for (int j = 0; j < Heigth; j++)
+                            {
+                                WriteLine("Введите элемент а[{0},{1}]",i,j);
+                                array[i,j] = Convert.ToInt32(ReadLine());
+                            }
+                        }
+                        menu2(array, Width, Heigth);
+                        break;
+                    case 3:
+                        exit = true;
+                        break;
+                }
             }
         }
 
-        static void Uporyadochivanie(IEnumerable[] a)
+
+        private static void menu2(int[,] array, int Width, int Heigth)
         {
-            
+            Clear();
+
+            WriteLine("1. Обработка данных");
+            WriteLine("2. Вывод данных");
+            WriteLine("3. В каком столбце есть значение <0?");
+            WriteLine("4. Выход");
+            var menu2 = Convert.ToInt32(ReadLine());
+            switch (menu2)
+            {
+                case 1:
+                    Uporyadochivanie(array, Width, Heigth);
+                    break;
+                case 2:
+                    Show(array, Width, Heigth);
+                    break;
+                case 3:
+                    OtricStolb(array, Width, Heigth);
+                    break;
+                case 4:
+                    Process.GetCurrentProcess().Kill();
+                    break;
+            }
+        }
+
+        private static int[,] AutoZapolnenie(out int Heigth, out int Width)
+        {
+            var ran = new Random();
+            Heigth = ran.Next(1, 20);
+            Width = ran.Next(1, 20);
+            var array = new int[Width, Heigth];
+            //Заполнение
+            for (var i = 0; i < array.Length / Heigth; i++)
+            {
+                for (var j = 0; j < array.Length / Width; j++)
+                    array[i, j] = ran.Next(-5, 20);
+                var sum = 0;
+                for (var j = 0; j < array.Length / Width; j++)
+                    sum += Math.Abs(array[i, j]);
+            }
+            return array;
+        }
+
+        private static void Uporyadochivanie(int[,] array, int Width, int Heigth)
+        {
             while (true)
             {
-                bool flag = false;
-                for (int i = 0; i < a.Length - 1; i++)
+                var flag = false;
+                for (var i = 0; i < array.Length / Heigth - 1; i++)
                 {
-                    int first = 0;
-                    int second = 0;
-                    foreach (var current in a[i])
+                    var First = 0;
+                    var Second = 0;
+                    for (var j = 0; j < array.Length / Width; j++)
                     {
-                        first += Math.Abs((int)current);
+                        First += Math.Abs(array[i, j]);
+                        Second += Math.Abs(array[i + 1, j]);
                     }
-                    foreach (var current in a[i + 1])
+                    if (First < Second)
                     {
-                        second += Math.Abs((int)current);
-                    }
-                    if (first < second)
-                    {
-                        var buf = a[i];
-                        a[i] = a[i + 1];
-                        a[i + 1] = buf;
+                        for (var j = 0; j < array.Length / Width; j++)
+                        {
+                            var buf = array[i, j];
+                            array[i, j] = array[i + 1, j];
+                            array[i + 1, j] = buf;
+                        }
                         flag = true;
                     }
                 }
                 if (!flag) break;
             }
-            Show(a);
+            Show(array, Width, Heigth);
         }
-        static void OtricStolb(IEnumerable[] a)
+
+        private static void OtricStolb(int[,] a, int Width, int Heigth)
         {
-            int maxlength = 0;
-            foreach (var current in a)
-            {
-                if (maxlength < ((int[])current).Length) maxlength = ((int[])current).Length;
-            }
+            var number = -1;
 
-            int number = -1;
-
-            for (int i = 0; i < maxlength; i++)
+            for (var i = 0; i < Heigth; i++)
             {
-                for (int j = 0; j < a.Length; j++)
-                {
-                    if (((int[])a[j]).Length > i)
+                for (var j = 0; j < Width; j++)
+                    if (a[j, i] < 0)
                     {
-                        if (((int[])a[j])[i] < 0)
-                        {
-                            number = i;
-                            break;
-                        }
+                        number = i;
+                        break;
                     }
-                }
                 if (number >= 0) break;
             }
-            if (number >= 0) Console.WriteLine("Номер отрицательного столбца: " + (number + 1));
+            if (number >= 0) WriteLine("Номер отрицательного столбца: " + (number + 1));
+            WriteLine("\n==================================================\n");
+            WriteLine("Нажмите любую кнопку для возврата");
+            ReadKey();
+            menu2(a, Width, Heigth);
         }
 
-        static void Show(IEnumerable[] a)
+        private static void Show(int[,] array, int Width, int Heigth)
         {
             WriteLine("Массив:\n");
-            foreach (var current in a)
+            for (var i = 0; i < Width; i++)
             {
-                foreach (var inserted in current)
-                {
-                    Write("{0,4}",inserted);
-                }
+                var sum = 0;
+                for (var j = 0; j < Heigth; j++)
+                    sum += Math.Abs(array[i, j]);
+                Write("Сумма {0,4} : ", sum);
+                for (var j = 0; j < array.Length / Width; j++)
+                    Write("{0,4}", array[i, j]);
                 WriteLine();
             }
             WriteLine("\n==================================================\n");
+            WriteLine("Нажмите любую кнопку для возврата");
+            ReadKey();
+            menu2(array,Width,Heigth);
         }
     }
 }
