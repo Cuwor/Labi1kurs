@@ -12,7 +12,7 @@ namespace Laba3_4
             while (!exit)
             {
                 Clear();
-                
+
                 WriteLine("1. Автозаполнение");
                 WriteLine("2. Заполнить вручную");
                 WriteLine("3. Выход");
@@ -24,7 +24,7 @@ namespace Laba3_4
                 {
                     case 1:
                         var arrayAuto = AutoZapolnenie(out Heigth, out Width);
-                        menu2(arrayAuto, Width, Heigth);
+                        Мenu2(arrayAuto, Width, Heigth);
                         break;
                     case 2:
                         WriteLine("Введите ширину");
@@ -33,15 +33,13 @@ namespace Laba3_4
                         Heigth = Convert.ToInt32(ReadLine());
 
                         var array = new int[Width, Heigth];
-                        for (int i = 0; i < Width; i++)
+                        for (var i = 0; i < Width; i++)
+                        for (var j = 0; j < Heigth; j++)
                         {
-                            for (int j = 0; j < Heigth; j++)
-                            {
-                                WriteLine("Введите элемент а[{0},{1}]",i,j);
-                                array[i,j] = Convert.ToInt32(ReadLine());
-                            }
+                            WriteLine("Введите элемент а[{0},{1}]", i, j);
+                            array[i, j] = Convert.ToInt32(ReadLine());
                         }
-                        menu2(array, Width, Heigth);
+                        Мenu2(array, Width, Heigth);
                         break;
                     case 3:
                         exit = true;
@@ -51,7 +49,7 @@ namespace Laba3_4
         }
 
 
-        private static void menu2(int[,] array, int Width, int Heigth)
+        private static void Мenu2(int[,] array, int Width, int Heigth)
         {
             Clear();
 
@@ -143,7 +141,7 @@ namespace Laba3_4
             WriteLine("\n==================================================\n");
             WriteLine("Нажмите любую кнопку для возврата");
             ReadKey();
-            menu2(a, Width, Heigth);
+            Мenu2(a, Width, Heigth);
         }
 
         private static void Show(int[,] array, int Width, int Heigth)
@@ -162,7 +160,7 @@ namespace Laba3_4
             WriteLine("\n==================================================\n");
             WriteLine("Нажмите любую кнопку для возврата");
             ReadKey();
-            menu2(array,Width,Heigth);
+            Мenu2(array, Width, Heigth);
         }
     }
 }
